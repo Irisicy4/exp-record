@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interaction Datasets for Training World Models — Survey</title><style>
+:root{--bg:#0f1116;--card:#171a21;--ink:#e8eaed;--mut:#9aa0aa;--line:#2a2f3a;--base:#3b4252}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:30px 18px 80px}h1{font-size:22px;margin:0 0 4px}h2{font-size:16px;margin:30px 0 6px}
+.sub{color:var(--mut);margin:0 0 16px}
+.defs{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:12px 0;color:var(--mut);font-size:12.7px}
+.defs b{color:var(--ink)}.defs code{color:#d2a8ff}
+a{color:#79b8ff;text-decoration:none}a:hover{text-decoration:underline}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:6px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:12.8px}
+thead th{background:#11141a;color:var(--mut);font-weight:600;font-size:12px}
+tbody tr:last-child td{border-bottom:none}
+td.ds{white-space:nowrap;font-weight:600}td.ds .yr{color:var(--mut);font-weight:400;font-size:11.5px}
+.pill{display:inline-block;padding:1px 7px;border-radius:999px;font-size:10.5px;font-weight:600}
+.p-act{background:#0f3a2a;color:#7ee787}.p-noact{background:#4a2a12;color:#ffb377}.p-lat{background:#3a2a5a;color:#d3b8ff}
+.p-open{background:#10325f;color:#9ec5ff}.p-prop{background:#4a1a24;color:#ff9daa}
+.tblwrap{overflow-x:auto}
+.legend{color:var(--mut);font-size:12px;margin:8px 0 0}
+ul{margin:6px 0 0 18px;color:var(--mut);font-size:12.8px}ul b{color:var(--ink)}
+</style></head><body><div class="wrap">
+<h1>Interaction Datasets for Training World Models</h1>
+<p class="sub">Survey of widely used datasets, anchored on <a href="https://arxiv.org/abs/2504.08388">MineWorld (arXiv:2504.08388)</a> · compiled 2026-07-09</p>
+
+<div class="defs">
+<b>Anchor paper.</b> <a href="https://arxiv.org/abs/2504.08388">MineWorld: a Real-Time and Open-Source Interactive World Model on Minecraft</a> (Microsoft Research, 2025) is a visual-action autoregressive Transformer trained on paired Minecraft game scenes and player actions; its training data comes from the openly released <b>OpenAI VPT contractor dataset</b> (row 1 below). This page surveys the other famous interaction datasets that the world-model literature trains on, grouped by domain.
+<br><br>
+<b>Action labels:</b> <span class="pill p-act">actions</span> ground-truth or pseudo-labeled action sequences paired with observations ·
+<span class="pill p-lat">latent</span> no recorded actions — the model infers latent actions from video ·
+<span class="pill p-noact">video-only</span> passive video used for world-model pretraining ·
+<b>Access:</b> <span class="pill p-open">open</span> / <span class="pill p-prop">proprietary</span>
+</div>
+
+<h2>1 · Games &amp; open-ended sandboxes</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Dataset</th><th>Scale</th><th>Actions</th><th>Access</th><th>What it is</th><th>World models trained on it</th></tr></thead>
+<tbody>
+<tr><td class="ds"><a href="https://github.com/openai/Video-Pre-Training">VPT contractor data</a> <span class="yr">OpenAI · 2022</span></td>
+<td>~2,500 h contractor gameplay; IDM pseudo-labels scale to ~270k h of web video</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Minecraft gameplay recorded with exact mouse + keyboard actions; the de-facto standard Minecraft interaction corpus</td>
+<td><b>MineWorld</b>, VPT, Dreamer 4, Oasis-style Minecraft WMs, STEVE-1, GROOT</td></tr>
+<tr><td class="ds"><a href="https://minerl.io/">MineRL</a> <span class="yr">CMU/OpenAI · 2019</span></td>
+<td>60M+ state–action pairs (~500 h) of human demos</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Task-structured Minecraft demonstrations (ObtainDiamond etc.); long-running NeurIPS competition</td>
+<td>MineRL competition agents; early Minecraft dynamics-model baselines</td></tr>
+<tr><td class="ds"><a href="https://minedojo.org/">MineDojo</a> <span class="yr">NVIDIA · 2022</span></td>
+<td>730K+ YouTube videos + 6K wiki pages + 340K reddit posts</td>
+<td><span class="pill p-noact">video-only</span></td><td><span class="pill p-open">open</span></td>
+<td>Internet-scale Minecraft knowledge base for pretraining</td>
+<td>MineDojo/MineCLIP agents; video pretraining for Minecraft WMs</td></tr>
+<tr><td class="ds"><a href="https://arxiv.org/abs/2402.15391">Genie “Platformers”</a> <span class="yr">DeepMind · 2024</span></td>
+<td>244k h crawled → 30k h curated (6.8M 16-s clips)</td>
+<td><span class="pill p-lat">latent</span></td><td><span class="pill p-prop">proprietary</span></td>
+<td>Filtered internet 2D-platformer videos; no action labels — Genie learns a latent action space, the template for Genie 2/3</td>
+<td>Genie (11B foundation world model)</td></tr>
+<tr><td class="ds"><a href="https://gamengen.github.io/">GameNGen DOOM</a> <span class="yr">Google · 2024</span></td>
+<td>~900M frames of RL-agent play</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-prop">proprietary</span></td>
+<td>DOOM frames + actions generated by an RL agent, then used to train a diffusion neural game engine — the “agent collects its own dataset” recipe</td>
+<td>GameNGen (playable DOOM at 20+ FPS)</td></tr>
+<tr><td class="ds"><a href="https://github.com/TeaPearce/Counter-Strike_Behavioural_Cloning">CS:GO Deathmatch</a> <span class="yr">Pearce &amp; Zhu · 2022</span></td>
+<td>~95 h online play (5.5M frames); 87 h used by DIAMOND</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Counter-Strike gameplay with mouse/keyboard labels, originally for behavioural cloning</td>
+<td>DIAMOND CS:GO (diffusion world model, playable on one GPU)</td></tr>
+<tr><td class="ds"><a href="https://research.google/blog/an-optimistic-perspective-on-offline-reinforcement-learning/">Atari ALE / DQN Replay</a> <span class="yr">2013 / 2020</span></td>
+<td>50M transitions per game × 60 games (replay); Atari 100k for sample-efficiency</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Simulator-generated interaction data; the canonical small-scale world-model benchmark</td>
+<td>SimPLe, DreamerV1–V3, IRIS, Δ-IRIS, DIAMOND, TWM</td></tr>
+</tbody></table></div>
+
+<h2>2 · Autonomous driving</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Dataset</th><th>Scale</th><th>Actions</th><th>Access</th><th>What it is</th><th>World models trained on it</th></tr></thead>
+<tbody>
+<tr><td class="ds"><a href="https://www.nuscenes.org/">nuScenes</a> <span class="yr">Motional · 2019</span></td>
+<td>1,000 scenes (~5.5 h), full sensor suite, ego trajectories</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>The default benchmark for driving world models: camera + LiDAR + radar with rich annotation</td>
+<td>DriveDreamer, Drive-WM, MagicDrive, Vista (fine-tune), most academic driving WMs</td></tr>
+<tr><td class="ds"><a href="https://github.com/OpenDriveLab/DriveAGI">OpenDV-2K</a> <span class="yr">OpenDriveLab · 2024</span></td>
+<td>2,059 h (1,747 h YouTube + public sets) — ~300× nuScenes</td>
+<td><span class="pill p-noact">video-only</span> + text</td><td><span class="pill p-open">open</span></td>
+<td>Largest public driving-video corpus, built to pretrain generative driving world models</td>
+<td>GenAD, Vista</td></tr>
+<tr><td class="ds">Wayve internal corpus <span class="yr">2023</span></td>
+<td>4,700 h proprietary London driving (2019–2023)</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-prop">proprietary</span></td>
+<td>Expert driving video paired with ego actions and text</td>
+<td>GAIA-1 (9B generative driving world model), GAIA-2</td></tr>
+<tr><td class="ds"><a href="https://drivingdojo.github.io/">DrivingDojo</a> <span class="yr">CASIA/Meituan · 2024</span></td>
+<td>~18k clips curated for interaction richness</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>First driving dataset designed specifically for interactive world models: dense multi-agent interplay + rare events</td>
+<td>DrivingDojo baseline WMs; action-instruction-following studies</td></tr>
+</tbody></table></div>
+
+<h2>3 · Robotics &amp; embodied manipulation</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Dataset</th><th>Scale</th><th>Actions</th><th>Access</th><th>What it is</th><th>World models trained on it</th></tr></thead>
+<tbody>
+<tr><td class="ds"><a href="https://robotics-transformer-x.github.io/">Open X-Embodiment</a> <span class="yr">DeepMind + 21 labs · 2023</span></td>
+<td>1M+ real trajectories, 22 embodiments, 60+ datasets</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>The pooled cross-embodiment corpus; backbone for robot foundation models and action-conditioned world models</td>
+<td>RT-X, Octo, OpenVLA; WM works: iVideoGPT, WHALE, Genie-Envisioner-class models</td></tr>
+<tr><td class="ds"><a href="https://droid-dataset.github.io/">DROID</a> <span class="yr">Stanford et al. · 2024</span></td>
+<td>76k teleop episodes, 564 scenes, 50 operators, 3 continents</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>“In-the-wild” Franka manipulation with high scene diversity</td>
+<td>V-JEPA 2-AC (Meta’s action-conditioned world model), π0 fine-tuning</td></tr>
+<tr><td class="ds"><a href="https://rail-berkeley.github.io/bridgedata/">BridgeData V2</a> <span class="yr">Berkeley · 2023</span></td>
+<td>60k+ trajectories on WidowX, 24 environments</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Diverse low-cost-arm manipulation; a staple of video-prediction world models</td>
+<td>UniSim (universal simulator) mixture, iVideoGPT, SuSIE-style models</td></tr>
+<tr><td class="ds"><a href="https://www.robonet.wiki/">RoboNet</a> <span class="yr">Berkeley/CMU · 2019</span></td>
+<td>162k trajectories / 15M frames, 7 robot platforms</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>The original cross-embodiment corpus, built for visual-foresight world models</td>
+<td>Visual Foresight, SV2P/FitVid video-prediction models</td></tr>
+<tr><td class="ds"><a href="https://robotics-transformer1.github.io/">RT-1 data</a> <span class="yr">Google · 2022</span></td>
+<td>130k episodes, 13 robots over 17 months</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open (via OXE)</span></td>
+<td>Kitchen-task teleoperation at industrial scale; now folded into Open X-Embodiment</td>
+<td>RT-1/RT-2 policies; UniSim mixture</td></tr>
+<tr><td class="ds"><a href="https://agibot-world.com/">AgiBot World</a> <span class="yr">AgiBot · 2025</span></td>
+<td>1M+ trajectories, 217 tasks, 100 real robots</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">open</span></td>
+<td>Humanoid-platform manipulation at warehouse scale</td>
+<td>GO-1, Genie Envisioner (robotic world foundation platform)</td></tr>
+<tr><td class="ds"><a href="https://www.1x.tech/discover/1x-world-model">1X World Model data</a> <span class="yr">1X · 2024–25</span></td>
+<td>EVE/NEO humanoid logs (video + whole-body actions); challenge subset released</td>
+<td><span class="pill p-act">actions</span></td><td><span class="pill p-open">partially open</span></td>
+<td>Humanoid home/office data driving the 1X World Model Challenge (compression / future-prediction tracks)</td>
+<td>1X world models for policy evaluation</td></tr>
+</tbody></table></div>
+
+<h2>4 · Human video (passive pretraining for world models)</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Dataset</th><th>Scale</th><th>Actions</th><th>Access</th><th>What it is</th><th>World models trained on it</th></tr></thead>
+<tbody>
+<tr><td class="ds"><a href="https://www.qualcomm.com/developer/software/something-something-v-2-dataset">Something-Something V2</a> <span class="yr">2017</span></td>
+<td>220,847 clips, 174 action templates</td>
+<td><span class="pill p-noact">video-only</span> + text</td><td><span class="pill p-open">open</span></td>
+<td>Crowd-acted human–object interactions (“putting X into Y”); teaches contact/physics priors</td>
+<td>V-JEPA / V-JEPA 2 pretraining, UniSim mixture, GR-1/GR-2</td></tr>
+<tr><td class="ds"><a href="https://ego4d-data.org/">Ego4D</a> <span class="yr">Meta · 2022</span></td>
+<td>3,670 h egocentric video, 74 locations</td>
+<td><span class="pill p-noact">video-only</span></td><td><span class="pill p-open">open</span></td>
+<td>Daily-life first-person video; the main egocentric prior for embodied world models</td>
+<td>UniSim mixture, V-JEPA 2 pretraining, GR-2 pretraining</td></tr>
+</tbody></table></div>
+
+<h2>Takeaways</h2>
+<ul>
+<li><b>Three routes to “interaction”:</b> record real actions (VPT, OXE, nuScenes) · let an agent generate its own data in a simulator (GameNGen, Atari) · infer <i>latent</i> actions from raw video (Genie) — the latent-action route is what unlocks internet-scale video.</li>
+<li><b>Minecraft is the common testbed</b> because VPT gives the largest open action-labeled corpus in any domain (~2.5k h exact mouse/keyboard); MineWorld, Oasis and Dreamer 4 all sit on top of it.</li>
+<li><b>Scale is bimodal:</b> action-labeled data tops out at thousands of hours (VPT 2.5k h, GAIA-1 4.7k h), while video-only corpora reach 30k–270k h — hence the standard recipe of video pretraining + small action-labeled fine-tuning (GenAD/Vista, V-JEPA 2 → V-JEPA 2-AC).</li>
+<li><b>Data quality beats quantity:</b> Genie’s curated 30k h (12% of the crawl) outperformed training on the full 244k h; DIAMOND simulates CS:GO from just 87 h.</li>
+</ul>
+
+<p class="legend">Anchor paper: <a href="https://arxiv.org/abs/2504.08388">MineWorld (arXiv:2504.08388)</a> ·
+Key sources: <a href="https://openai.com/index/vpt/">OpenAI VPT</a>,
+<a href="https://arxiv.org/abs/2402.15391">Genie</a>,
+<a href="https://gamengen.github.io/">GameNGen</a>,
+<a href="https://github.com/OpenDriveLab/DriveAGI">GenAD / OpenDV-2K</a>,
+<a href="https://wayve.ai/thinking/introducing-gaia1/">GAIA-1</a>,
+<a href="https://robotics-transformer-x.github.io/">Open X-Embodiment</a>,
+<a href="https://droid-dataset.github.io/">DROID</a>,
+<a href="https://arxiv.org/abs/2405.17398">Vista</a>,
+<a href="https://arxiv.org/abs/2410.10738">DrivingDojo</a></p>
+</div></body></html>
